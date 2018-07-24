@@ -13,12 +13,21 @@ export default class LiveSearch extends React.Component {
     }
   }
 
+  onSearchTermChange(value) {
+    this.setState({
+      searchTerm: value
+    })
+  }
+
   render() {
+    const regex = new RegExp(this.state.searchTerm, 'i');
+    const searchResults = this.props.characters.filter(character => character.name.match(regex))
+
     return (
       <div>
-        <SearchForm />
-        <CharacterCount />
-        <CharacterList characters={this.props.characters} />
+        <SearchForm value={this.state.searchTerm} onChange={value => this.onSearchTermChange(value)}/>
+        <CharacterCount count={searchResults.length}/>
+        <CharacterList characters={searchResults} />
       </div>
     )
   }
